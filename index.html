@@ -16,7 +16,7 @@
             from browser import document
 
             def show_text(e):
-                document['output'].textContent = float(e.target.value) + 55
+                document['output'].textContent = float(e.target.value) + float(e.target.value)
 
             document['text'].bind('input', show_text)
         </script>

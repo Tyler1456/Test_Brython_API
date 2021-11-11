@@ -16,7 +16,7 @@
             from browser import document, numpy
 
             def show_text(e):
-                document['output'].textContent = float(e.target.value) + numpy.random.randn()
+                document['output'].textContent = float(e.target.value) + 55
 
             document['text'].bind('input', show_text)
         </script>

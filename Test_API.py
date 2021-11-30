@@ -1,17 +1,21 @@
 import uvicorn
 
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Request
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 import pandas
 import eeweather
+import json
+
 
 class Inputs(BaseModel):
     value1: float
     value2: float
     x: str
     y: str
+    jsonCSV: str
+
 app = FastAPI()
 
 origins = [
@@ -50,6 +54,20 @@ def sum_CSV(file: UploadFile = File(...)):
 
 
     return {'result': float(Sum)}
+
+@app.post('/sumJSON')
+
+def sum_JSON(jsonCSV: str):
+    JSONData = json.loads(jsonCSV)
+    df = pandas.DataFrame.from_dict(JSONData['data'])
+    df["Index"] = pandas.to_numeric(df["Index"], downcast="float")
+    df["Value"] = pandas.to_numeric(df["Value"], downcast="float")
+
+    Sum = df['Value'].sum()
+
+
+    return {'result': float(Sum)}
+
 
 @app.get('/linearregression')
 
